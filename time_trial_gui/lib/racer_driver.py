@@ -34,7 +34,7 @@ def parse_request(request_text):
 
     # request.headers is still a message object
     # items returns a list of tuples, but we need actual header k,v pairs:
-    header_list = [x[0] + ": " + x[1] for x in request.headers.items()]
+    header_list = [f"{x[0]}: {x[1]}" for x in request.headers.items()]
 
     return (request.command, request.path, request.request_version, request.request_body, header_list )
 
@@ -52,22 +52,26 @@ def execute_trial(trial):
             verb, path, version, body, headers = parse_request(bytes(trial.request,"iso-8859-1"))
 
         except ParseException as e:
-            print("unable to parse request: %s" % e)
+            print(f"unable to parse request: {e}")
 
         cmd = [CPP_HTTP_TIMING_EXECUTABLE, trial.request_url + path, verb, version, body, str(trial.real_time), str(trial.core_affinity), " ", str(trial.reps)]
         cmd.extend(headers)
-        print("running %s, args %s" % (CPP_HTTP_TIMING_EXECUTABLE, cmd))
+        print(f"running {CPP_HTTP_TIMING_EXECUTABLE}, args {cmd}")
 
     else:
         print("Executing Echo Trial...")
-        #TODO: get this from a config file
-        cmd.append(CPP_ECHO_TIMING_EXECUTABLE)
-        cmd.append(trial.target_host)
-        cmd.append(str(trial.target_port))
-        cmd.append(str(int(trial.real_time)))
-        cmd.append(str(trial.core_affinity))
-        cmd.append(str(trial.delay))
-        cmd.append(str(trial.reps))
+        cmd.extend(
+            (
+                CPP_ECHO_TIMING_EXECUTABLE,
+                trial.target_host,
+                str(trial.target_port),
+                str(int(trial.real_time)),
+                str(trial.core_affinity),
+                str(trial.delay),
+                str(trial.reps),
+            )
+        )
+
         print(cmd)
 
     return subprocess.check_output(cmd)

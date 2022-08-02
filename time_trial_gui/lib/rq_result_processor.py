@@ -19,7 +19,13 @@ class RqResultsProcessor(threading.Thread):
         redis_conn = Redis()
         # get all
         while True:
-            incomplete = self.session.query(Trial).filter(Trial.end_date == None).filter(Trial.start_date!=None).all()
+            incomplete = (
+                self.session.query(Trial)
+                .filter(Trial.end_date is None)
+                .filter(Trial.start_date != None)
+                .all()
+            )
+
             for t in incomplete:
                 try:
                     job = Job.fetch(t.job, connection=redis_conn)
@@ -29,7 +35,7 @@ class RqResultsProcessor(threading.Thread):
                     continue
 
                 if job.result is not None:
-                    print("Result for " + t.name + " found.")
+                    print(f"Result for {t.name} found.")
                     t.result = job.result
                     t.end_date = datetime.now()
 

@@ -191,7 +191,7 @@ class ExperimentsTab(QtGui.QWidget):
         self.trial_status.edit_trial_button.setEnabled(True)
         self.trial_status.refresh_trial_button.setEnabled(True)
 
-        if self.current_trial.start_date == None:
+        if self.current_trial.start_date is None:
             self.trial_status.start_trial_button.setEnabled(True)
             self.trial_status.stop_trial_button.setEnabled(False)
         else:
@@ -271,12 +271,7 @@ class ExperimentsTab(QtGui.QWidget):
 
         job.reps = t.reps
         job.core_affinity = t.core_id
-        if t.real_time:
-            job.real_time = 1
-        else:
-            job.real_time = 0
-
-
+        job.real_time = 1 if t.real_time else 0
         res = q.enqueue_call(func=execute_trial, args=(job,), result_ttl=-1, timeout=1000000)
         self.current_trial.job = res.get_id()
         self.current_trial.start_date = datetime.now()

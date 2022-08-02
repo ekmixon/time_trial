@@ -44,10 +44,16 @@ class PlotStyleEditDialog(QtGui.QDialog):
         filter_box_layout.addWidget(self.filter_type)
 
         # for absolute
-        self.minimum = QtGui.QLineEdit(text="" if plot.minimum == None else str(plot.minimum) )
+        self.minimum = QtGui.QLineEdit(
+            text="" if plot.minimum is None else str(plot.minimum)
+        )
+
         filter_box_layout.addRow("Minimum",self.minimum)
 
-        self.maximum = QtGui.QLineEdit(text="" if plot.maximum == None else str(plot.maximum))
+        self.maximum = QtGui.QLineEdit(
+            text="" if plot.maximum is None else str(plot.maximum)
+        )
+
         filter_box_layout.addRow("Maximum",self.maximum)
 
 

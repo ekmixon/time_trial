@@ -156,7 +156,7 @@ qApp.setWindowIcon(QtGui.QIcon('images/clock.png'))
 qApp.setApplicationName("Time Trial")
 
 aw = ApplicationWindow()
-aw.setWindowTitle("%s" % progname)
+aw.setWindowTitle(f"{progname}")
 
 desktop = QtGui.QDesktopWidget()
 screen_size = desktop.availableGeometry()

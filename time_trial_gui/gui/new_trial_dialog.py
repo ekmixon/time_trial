@@ -177,12 +177,7 @@ class NewTrialDialog(QtGui.QDialog):
 
         # only init a new Trial object when not editing
         if trial is None:
-            if self.type.currentText() == "HTTP Trial":
-                trial = HTTPTrial()
-            else:
-                trial = EchoTrial()
-
-
+            trial = HTTPTrial() if self.type.currentText() == "HTTP Trial" else EchoTrial()
         #store type-specific data
         if self.type.currentText() == "HTTP Trial":
             trial.request_url = self.request_url.text()

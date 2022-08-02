@@ -13,14 +13,14 @@ class TimingData:
     def load_from_csv(self, file):
         self.full_path = file
         self.file_name = os.path.basename(file)
-        self.logger.info("Loading from " + file)
+        self.logger.info(f"Loading from {file}")
 
 
         data_file = open(file)
         self.parse_csv(data_file)
 
     def parse_csv(self, data):
-        if data == None or data == "":
+        if data is None or data == "":
             return
 
 

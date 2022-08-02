@@ -242,7 +242,10 @@ class FeasibilityTab(QtGui.QWidget):
         self.plotter.update_plot()
         box_test = BoxTest(self.shorter, self.longer, float(self.analysis_lower_quantile.text()), float(self.analysis_upper_quantile.text()))
         res = box_test.perform()
-        self.analysis_result.setText("Are the two distributions distinct?  " + str(res))
+        self.analysis_result.setText(
+            f"Are the two distributions distinct?  {str(res)}"
+        )
+
         x_box = box_test.x_box()
         y_box = box_test.y_box()
 
